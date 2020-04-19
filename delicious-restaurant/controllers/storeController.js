@@ -9,7 +9,13 @@ exports.addStore = (req, res) => {
   res.render('editStore', {title: 'Add Store'});
 }
 
-exports.createStore = (req, res) => {
-  const Store = new Store(req.body);
-  store.save();
-}
+exports.createStore = async (req, res) => {
+  const store = await (new Store(req.body)).save();
+  req.flash('success', `${store.name} was succesfully created!`)
+  res.redirect(`/store/${store.slug}`);
+};
+
+// exports.getStores = async (req, res)  => {
+//   const stores = await Store.find();
+//   res.render('stores', {title: 'Stores'}, stores);
+// }
