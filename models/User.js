@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 const md5 = require('md5');
 const validator = require('validator');
-const mongodbErrorHandler = require('mongoose-mongodb-error');
-const passportLocalMongoose = require('password-local-mongoose');
+const mongodbErrorHandler = require('mongoose-mongodb-errors');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new Schema({
   email: {
@@ -22,7 +22,7 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
-userSchema.plugin(mongodbErrorHandler);
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' }); // it will create a password
+userSchema.plugin(mongodbErrorHandler); // this lets the user have more comprehensive error messages
 
 module.exports = mongoose.model('User', userSchema);
