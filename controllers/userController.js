@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = mongoose.model('Store');
+const User = mongoose.model('User');
 const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
@@ -7,30 +7,29 @@ exports.loginForm = (req, res) => {
 };
 
 exports.registerForm = (req, res) => {
-  res.render('register', { title: 'register' });
-}
+  res.render('register', { title: 'Register' });
+};
 
-// Validate that the data is correct (not corrupted, in the format requested...)
 exports.validateRegister = (req, res, next) => {
   req.sanitizeBody('name');
-  req.checkBody('name', 'You must supply a name').notEmpty();
-  req.checkBody('email', 'That email is not valid').isEmail();
+  req.checkBody('name', 'You must supply a name!').notEmpty();
+  req.checkBody('email', 'That Email is not valid!').isEmail();
   req.sanitizeBody('email').normalizeEmail({
-    remove_dots: false,
+    gmail_remove_dots: false,
     remove_extension: false,
     gmail_remove_subaddress: false
   });
-  req.checkBody('password', 'Password can\t be empty').notEmpty();
-  req.checkBody('password', 'Oops, your password can\t be empty').notEmpty();
-  req.checkBody('password-confirm', 'Oops, your passwords do not match').equals(req.body.password);
+  req.checkBody('password', 'Password Cannot be Blank!').notEmpty();
+  req.checkBody('password-confirm', 'Confirmed Password cannot be blank!').notEmpty();
+  req.checkBody('password-confirm', 'Oops! Your passwords do not match').equals(req.body.password);
 
-  const errors = req.validationErrors(); // if there are errors in the registration validation then it'll be flashed to the user
+  const errors = req.validationErrors();
   if (errors) {
     req.flash('error', errors.map(err => err.msg));
     res.render('register', { title: 'Register', body: req.body, flashes: req.flash() });
-    return;
+    return; // stop the fn from running
   }
-  next();
+  next(); // there were no errors!
 };
 
 exports.register = async (req, res, next) => {

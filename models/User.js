@@ -12,17 +12,17 @@ const userSchema = new Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    validate: [validator.isEmail, 'Invalid email adress'],
-    required: 'Please enter a valid email'
+    validate: [validator.isEmail, 'Invalid Email Address'],
+    required: 'Please Supply an email address'
   },
   name: {
     type: String,
-    trim: true,
-    required: 'Please enter a name'
+    required: 'Please supply a name',
+    trim: true
   }
 });
 
-userSchema.plugin(passportLocalMongoose, { usernameField: 'email' }); // it will create a password
-userSchema.plugin(mongodbErrorHandler); // this lets the user have more comprehensive error messages
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+userSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model('User', userSchema);
