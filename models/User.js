@@ -22,7 +22,13 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
-userSchema.plugin(mongodbErrorHandler);
+userSchema.virtual('gravatar').get(function() {
+const hash = md5(this.email);
+return `https://gravatar.com/avatar/${hash}?s=200`;
+});
+
+userSchema.plugin(passportLocalMongoose, { usernameField: 'email' }); // this is used in order to create a passeord hash from the email
+userSchema.plugin(mongodbErrorHandler); // more readable error message for the user
+
 
 module.exports = mongoose.model('User', userSchema);
