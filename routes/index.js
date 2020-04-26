@@ -1,33 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const storeController = require('../controllers/storeController');
+const spotController = require('../controllers/spotController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', catchErrors(storeController.getStores));
-router.get('/stores', catchErrors(storeController.getStores));
+router.get('/', catchErrors(spotController.getSpots));
+router.get('/spots', catchErrors(spotController.getSpots));
 router.get('/add',
   authController.isLoggedIn,
-  storeController.addStore);
+  spotController.addSpot);
 
 router.post('/add',
-  storeController.upload,
-  catchErrors(storeController.resize),
-  catchErrors(storeController.createStore)
+  spotController.upload,
+  spotController.resize,
+  catchErrors(spotController.createSpot)
 );
 
 router.post('/add/:id',
-  storeController.upload,
-  catchErrors(storeController.resize),
-  catchErrors(storeController.updateStore)
+  spotController.upload,
+  spotController.resize,
+  catchErrors(spotController.updateSpot)
 );
 
-router.get('/stores/:id/edit', catchErrors(storeController.editStore));
-router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
+router.get('/spots/:id/edit', catchErrors(spotController.editSpot));
+router.get('/spot/:slug', catchErrors(spotController.getSpotBySlug));
 
-router.get('/tags', catchErrors(storeController.getStoresByTag));
-router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
+router.get('/tags', catchErrors(spotController.getSpotsByTag));
+router.get('/tags/:tag', catchErrors(spotController.getSpotsByTag));
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);

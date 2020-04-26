@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 const slug = require('slugs');
 
-const storeSchema = new mongoose.Schema({
+const spotSchema = new mongoose.Schema({
   name: {
     type: String,
     trim: true,
-    required: 'Please enter a store name!'
+    required: 'Please enter a spot name!'
   },
   slug: String,
   description: {
@@ -35,30 +35,29 @@ const storeSchema = new mongoose.Schema({
   photo: String
 });
 
-storeSchema.pre('save', async function(next) {
+spotSchema.pre('save', async function(next) {
   if (!this.isModified('name')) {
     next(); // skip it
     return; // stop this function from running
   }
   this.slug = slug(this.name);
 
-  // Find if there are already Stores with the same slug
+  // Find if there are already spots with the same slug
   const slugRegEx = new RegExp (`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-  const storesWithSlug = await this.constructor.find({ slug: slugRegEx});
-  // If there is already stores with the same slug, then this Store slug should be different
-  if (storesWithSlug.length) {
-    this.slug = `${this.slug}-${storesWithSlug.length - 1}`;
+  const spotsWithSlug = await this.constructor.find({ slug: slugRegEx});
+  // If there is already spots with the same slug, then this Spot slug should be different
+  if (spotsWithSlug.length) {
+    this.slug = `${this.slug}-${spotsWithSlug.length - 1}`;
   }
 
   next();
 });
 
-storeSchema.statics.getTagsList = function() {
+spotSchema.statics.getTagsList = function() {
   return this.aggregate([
     { $unwind: '$tags' },
-    // { $group: { _id: '$tags', count: { $sum: 1 } }},
     { $sortByCount: '$tags' }
     ]);
 }
 
-module.exports = mongoose.model('Store', storeSchema);
+module.exports = mongoose.model('Spot', spotSchema);

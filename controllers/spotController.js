@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Store = mongoose.model('Store');
+const Spot = mongoose.model('Spot');
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
@@ -15,7 +15,7 @@ const multerOptions = {
     if(isPhoto) {
       next(null, true);
     } else {
-      next({message: 'That file type isn\'t allowed'}, false);
+      next({ message: 'That filetype isn\'t allowed!' }, false);
     }
   }
 };
@@ -24,8 +24,8 @@ exports.homePage = (req, res) => {
   res.render('index', {title: 'Home'});
 };
 
-exports.addStore = (req, res) => {
-  res.render('editStore', { title: 'Add Store' });
+exports.addSpot = (req, res) => {
+  res.render('editSpot', { title: 'Add Spot' });
 };
 
 exports.upload = multer(multerOptions).single('photo'); // uploaded to our filesystem but not saved yet in the DB
@@ -34,12 +34,13 @@ exports.resize = async (req, res, next) => {
   if (!req.file) {
     next();  // skip it if there is no new file to resize
     return;
-  };
+  }
 
   // Rename the photo with a unique ID (uuid)
   // then send it to the body request with it's mimetype extention (we don't trust the users extension)
   const extension = req.file.mimetype.split('/')[1];
-  req.body.photo = `${uuid.v4()}.${extension}`
+  console.log(req.body);
+  req.body.photo = `${uuid.v4()}.${extension}`;
 
   // Resize the photo
   const photo = await jimp.read(req.file.buffer); // buffer is an area of memory where the photo is stored as a raw binary data
@@ -51,58 +52,58 @@ exports.resize = async (req, res, next) => {
 };
 
 // You should use async every you are dealing with the DB
-exports.createStore = async (req, res) => {
-  const store = await (new Store(req.body)).save();
-  req.flash('success', `${store.name} was succesfully created!`)
-  res.redirect(`/store/${store.slug}`);
+exports.createSpot = async (req, res) => {
+  const spot = await (new Spot(req.body)).save();
+  req.flash('success', `${spot.name} was succesfully created!`)
+  res.redirect(`/spot/${spot.slug}`);
 };
 
-exports.getStores = async (req, res)  => {
-  // Query DB for a list of all stores
-  const stores = await Store.find();
-  res.render('stores', { title: 'Stores', stores });
+exports.getSpots = async (req, res)  => {
+  // Query DB for a list of all spots
+  const spots = await Spot.find();
+  res.render('spots', { title: 'Spots', spots });
 };
 
-exports.editStore = async (req, res) => {
-  // Find the store by its ID
-  const store = await Store.findOne({_id: req.params.id});
+exports.editSpot = async (req, res) => {
+  // Find the spot by its ID
+  const spot = await Spot.findOne({_id: req.params.id});
 
   // Check if the user is the owner
   // LATER
 
   // Render out the edit form
-  res.render('editStore', { title: `Edit ${store.name}`, store });
+  res.render('editSpot', { title: `Edit ${spot.name}`, spot });
 };
 
-exports.updateStore = async (req, res) => {
-  // Find the store store and update it
+exports.updateSpot = async (req, res) => {
+  // Find the spot and update it
   // findOneAndUpdate() is a method in MongoDB
   // it takes three parameters : query, data, options
 
   req.body.location.type = 'Point';// set the location data to be a Point
-  const store = await Store.findOneAndUpdate({_id: req.params.id}, req.body, {
-      new: true, // return the new store instead of the former one
+  const spot = await Spot.findOneAndUpdate({_id: req.params.id}, req.body, {
+      new: true, // return the new spot instead of the former one
       runValidators: true, // run all the required validators from the models
   }).exec();
 
-  // Redirect to the store and flash that it worked
-  req.flash('success', `<strong>${store.name}</strong> was succesfully updated. <a href='/stores/${store.slug}'> View Store -> </a>`);
-  res.redirect(`/stores/${store.id}/edit`);
+  // Redirect to the spot and flash that it worked
+  req.flash('success', `<strong>${spot.name}</strong> was succesfully updated. <a href='/spot/${spot.slug}'> View Spot -> </a>`);
+  res.redirect(`/spots/${spot.id}/edit`);
 };
 
-exports.getStoreBySlug = async (req, res, next) => {
-  // Find the store in the DB
-  const store = await Store.findOne({ slug: req.params.slug });
-  if (!store) return next();
+exports.getSpotBySlug = async (req, res, next) => {
+  // Find the spot in the DB
+  const spot = await Spot.findOne({ slug: req.params.slug });
+  if (!spot) return next();
   // Render the page
-  res.render('store', { store, title: store.name });
+  res.render('spot', { spot, title: spot.name });
 };
 
-exports.getStoresByTag = async (req, res) => {
+exports.getSpotsByTag = async (req, res) => {
   const tag = req.params.tag
   const tagQuery = tag || { $exists: true }
-  const tagsPromise = Store.getTagsList();
-  const storesPromise = Store.find({ tags: tagQuery });
-  const [tags, stores] = await Promise.all([tagsPromise, storesPromise]);
-  res.render('tag', { tags, title: 'Tags', stores, tag });
-}
+  const tagsPromise = Spot.getTagsList();
+  const spotsPromise = Spot.find({ tags: tagQuery });
+  const [tags, spots] = await Promise.all([tagsPromise, spotsPromise]);
+  res.render('tag', { tags, title: 'Tags', spots, tag });
+};
