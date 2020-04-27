@@ -42,7 +42,7 @@ const spotSchema = new mongoose.Schema({
 
 // Define the indexes (so that the queries will be operated quicker)
 spotSchema.index({
-  name: 'text', // it sets the indexes as text
+  name: 'text', // it sets the indexes as text so that we can perform a search
   description: 'text'
 });
 

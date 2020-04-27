@@ -115,3 +115,24 @@ exports.getSpotsByTag = async (req, res) => {
   const [tags, spots] = await Promise.all([tagsPromise, spotsPromise]);
   res.render('tag', { tags, title: 'Tags', spots, tag });
 };
+
+//API
+
+exports.searchSpots = async (req, res) => {
+  const spots = await Spot
+  // find spots that match the query
+  .find({
+    $text: {
+      $search: req.query.q
+    }
+  }, {
+    score: { $meta: 'textScore'}
+  })
+  // sort the spots by score (more accurate query)
+  .sort({
+    score: { $meta: 'textScore'}
+  })
+  // limit the 5 first results
+  .limit(5);
+  res.json(spots);
+};
