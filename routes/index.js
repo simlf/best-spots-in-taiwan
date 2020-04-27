@@ -13,13 +13,13 @@ router.get('/add',
 
 router.post('/add',
   spotController.upload,
-  spotController.resize,
+  catchErrors(spotController.resize),
   catchErrors(spotController.createSpot)
 );
 
 router.post('/add/:id',
   spotController.upload,
-  spotController.resize,
+  catchErrors(spotController.resize),
   catchErrors(spotController.updateSpot)
 );
 
@@ -42,7 +42,7 @@ router.post('/register',
   // validation will be passed, but registration
   // will be failed in some reasons, e.g. second
   // registration with same email
-  catchErrors(userController.register),
+  userController.register,
   authController.login
 );
 
@@ -58,4 +58,6 @@ router.post('/account/reset/:token',
   catchErrors(authController.update)
 );
 
+// API Endpoints
+router.get('/api/search', catchErrors(spotController.searchSpots));
 module.exports = router;

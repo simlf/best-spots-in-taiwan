@@ -1,6 +1,5 @@
 mixin spotForm(spot = {})
   form(action=`/add/${spot.id || ''}` method='POST' class='card' enctype='multipart/form-data')
-    pre= h.dump(spot)
     label(for='name') Name
     input(type='text' name='name' value=spot.name)
     label(for='description') Description

@@ -53,6 +53,8 @@ exports.resize = async (req, res, next) => {
 
 // You should use async every you are dealing with the DB
 exports.createSpot = async (req, res) => {
+  console.log(req.body._id);
+  req.body.author = req.user._id;
   const spot = await (new Spot(req.body)).save();
   req.flash('success', `${spot.name} was succesfully created!`)
   res.redirect(`/spot/${spot.slug}`);
@@ -64,12 +66,18 @@ exports.getSpots = async (req, res)  => {
   res.render('spots', { title: 'Spots', spots });
 };
 
+const confirmOwner = (spot, user) => {
+  if (!spot.author.equals(user._id)) {
+    throw Error('You must have added the spot in order to edit it');
+  }
+};
+
 exports.editSpot = async (req, res) => {
   // Find the spot by its ID
   const spot = await Spot.findOne({_id: req.params.id});
 
   // Check if the user is the owner
-  // LATER
+  confirmOwner(spot, req.user);
 
   // Render out the edit form
   res.render('editSpot', { title: `Edit ${spot.name}`, spot });
@@ -93,7 +101,7 @@ exports.updateSpot = async (req, res) => {
 
 exports.getSpotBySlug = async (req, res, next) => {
   // Find the spot in the DB
-  const spot = await Spot.findOne({ slug: req.params.slug });
+  const spot = await Spot.findOne({ slug: req.params.slug }).populate('author');
   if (!spot) return next();
   // Render the page
   res.render('spot', { spot, title: spot.name });

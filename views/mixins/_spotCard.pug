@@ -2,9 +2,10 @@ mixin spotCard(spot = {})
   .spot
     .spot__hero
       .spot__actions
-        .spot__action.spot__action--edit
-          a(href=`/spots/${spot._id}/edit`)
-            != h.icon('pencil')
+        if user && spot.author.equals(user._id)
+          .spot__action.spot__action--edit
+            a(href=`/spots/${spot._id}/edit`)
+              != h.icon('pencil')
       img(src=`/uploads/${spot.photo || 'spot.png'}`)
       h2.title
         a(href=`/spot/${spot.slug}`) #{spot.name}

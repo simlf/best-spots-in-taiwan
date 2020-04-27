@@ -32,7 +32,18 @@ const spotSchema = new mongoose.Schema({
       required: 'Please enter an address!'
     }
   },
-  photo: String
+  photo: String,
+  author: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: 'You must supply an author'
+  }
+});
+
+// Define the indexes (so that the queries will be operated quicker)
+spotSchema.index({
+  name: 'text', // it sets the indexes as text
+  description: 'text'
 });
 
 spotSchema.pre('save', async function(next) {
