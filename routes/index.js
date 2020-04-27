@@ -60,4 +60,6 @@ router.post('/account/reset/:token',
 
 // API Endpoints
 router.get('/api/search', catchErrors(spotController.searchSpots));
+router.get('/api/spots/near', catchErrors(spotController.mapSpots));
+
 module.exports = router;

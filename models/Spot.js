@@ -46,6 +46,8 @@ spotSchema.index({
   description: 'text'
 });
 
+spotSchema.index({ location: '2dsphere'});
+
 spotSchema.pre('save', async function(next) {
   if (!this.isModified('name')) {
     next(); // skip it

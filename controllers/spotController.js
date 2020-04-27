@@ -136,3 +136,21 @@ exports.searchSpots = async (req, res) => {
   .limit(5);
   res.json(spots);
 };
+
+exports.mapSpots = async (req, res) => {
+  const coordinates = [req.query.lng, req.query.lat].map(parseFloat);
+  const q = {
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates
+        },
+        $maxDistance: 10000 // 10 km
+      }
+    }
+  };
+
+  const spots = await Spot.find(q).select('slug name description location');
+  res.json(spots);
+};
