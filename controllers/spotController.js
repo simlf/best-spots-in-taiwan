@@ -171,3 +171,13 @@ exports.heartSpot = async (req, res) => {
   );
   res.json(user);
 };
+
+exports.getHearts = async (req, res) => {
+  // 1.Find all the hearts that the user has and relate them to a spot
+  // 2.Link them to the spots
+  const spots = await Spot.find({
+    _id: { $in: req.user.hearts }
+  });
+
+  res.render('hearts', { title: 'Hearted store', spots });
+};

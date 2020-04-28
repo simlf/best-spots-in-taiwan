@@ -1,0 +1,10 @@
+extends layout
+
+include mixins/_spotCard
+
+block content
+  .inner
+    h2= title
+    .spots
+      each spot in spots
+        +spotCard(spot)

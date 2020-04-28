@@ -59,6 +59,8 @@ router.post('/account/reset/:token',
 );
 
 router.get('/map', spotController.mapPage);
+router.get('/hearts', authController.isLoggedIn,
+  catchErrors(spotController.getHearts));
 
 // API Endpoints
 router.get('/api/search', catchErrors(spotController.searchSpots));
