@@ -1,5 +1,5 @@
-import axios from 'axios';
-import dompurify from 'dompurify';
+import axios from 'axios'; // library for XMLHTTP and http requests
+import dompurify from 'dompurify'; // sanitizes the data (in this case it will prevent the user for submitting HTML in a form)
 
 function searchResultsHTML(spots) {
   return spots.map(spot => {
@@ -29,12 +29,13 @@ function typeAhead(search) {
 
     axios
       .get(`/api/search?q=${this.value}`)
-      .then(res => {
-        if (res.data.length) {
-          searchResults.innerHTML = dompurify.sanitize(searchResultsHTML(res.data));
+      .then(response => {
+        if (response.data.length) {
+          searchResults.innerHTML = dompurify.sanitize(searchResultsHTML(response.data));
           return;
         }
         // tell them nothing came back
+        // And prevent the user from submitting HTML in the form
         searchResults.innerHTML = dompurify.sanitize(`<div class="search__result">No results for ${this.value}</div>`);
       })
       .catch(err => {

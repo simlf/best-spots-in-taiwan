@@ -33,6 +33,7 @@ const spotSchema = new mongoose.Schema({
     }
   },
   photo: String,
+  // Add a relation between a the Spot and the User
   author: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
@@ -46,7 +47,7 @@ spotSchema.index({
   description: 'text'
 });
 
-spotSchema.index({ location: '2dsphere'});
+spotSchema.index({ location: '2dsphere' });
 
 spotSchema.pre('save', async function(next) {
   if (!this.isModified('name')) {

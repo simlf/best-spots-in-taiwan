@@ -151,6 +151,10 @@ exports.mapSpots = async (req, res) => {
     }
   };
 
-  const spots = await Spot.find(q).select('slug name description location');
+  const spots = await Spot.find(q).select('slug name description location photo');
   res.json(spots);
+};
+
+exports.mapPage = (req, res) => {
+  res.render('map', { title: 'Map' });
 };
