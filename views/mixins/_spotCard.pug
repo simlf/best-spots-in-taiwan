@@ -2,6 +2,13 @@ mixin spotCard(spot = {})
   .spot
     .spot__hero
       .spot__actions
+        if user
+          .spot__action.spot__action--heart
+            form.heart(action=`/api/spots/${spot._id}/heart` method="POST")
+              - const heartStrings = user.hearts.map(object => object.toString())
+              - const heartClass = heartStrings.includes(spot._id.toString()) ? 'heart__button--hearted' : ''
+              button.heart__button(type="submit" name="heart" class=heartClass)
+                != h.icon('heart')
         if user && spot.author.equals(user._id)
           .spot__action.spot__action--edit
             a(href=`/spots/${spot._id}/edit`)

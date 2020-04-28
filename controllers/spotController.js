@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Spot = mongoose.model('Spot');
+const User = mongoose.model('User');
 const multer = require('multer');
 const jimp = require('jimp');
 const uuid = require('uuid');
@@ -157,4 +158,16 @@ exports.mapSpots = async (req, res) => {
 
 exports.mapPage = (req, res) => {
   res.render('map', { title: 'Map' });
+};
+
+exports.heartSpot = async (req, res) => {
+  const hearts = req.user.hearts.map(object => object.toString());
+  // if the user has a heart (corresponding to the request params), it will be removed otherwise it will be added
+  const operator = hearts.includes(req.params.id) ? '$pull' : '$addToSet';
+  const user = await User
+  .findByIdAndUpdate(req.user._id,
+  { [operator]: { hearts: req.params.id } }, // [operator] will be replaced by either $pull or $addToSet
+  { new: true } // it will show the User after it has been updated
+  );
+  res.json(user);
 };
