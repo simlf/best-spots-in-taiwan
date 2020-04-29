@@ -13,6 +13,10 @@ mixin spotCard(spot = {})
           .spot__action.spot__action--edit
             a(href=`/spots/${spot._id}/edit`)
               != h.icon('pencil')
+        if spot.reviews
+          .spot__action.spot__action--count
+            != h.icon('review')
+            span= spot.reviews.length
       img(src=`/uploads/${spot.photo || 'spot.png'}`)
       h2.title
         a(href=`/spot/${spot.slug}`) #{spot.name}

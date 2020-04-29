@@ -65,6 +65,7 @@ router.get('/hearts', authController.isLoggedIn,
 router.post('/reviews/:id', authController.isLoggedIn,
   catchErrors(reviewController.addReview));
 
+router.get('/top', catchErrors(spotController.getTopSpots));
 // API Endpoints
 router.get('/api/search', catchErrors(spotController.searchSpots));
 router.get('/api/spots/near', catchErrors(spotController.mapSpots));

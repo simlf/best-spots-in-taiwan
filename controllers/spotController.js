@@ -63,7 +63,7 @@ exports.createSpot = async (req, res) => {
 
 exports.getSpots = async (req, res)  => {
   // Query DB for a list of all spots
-  const spots = await Spot.find();
+  const spots = await Spot.find().populate('reviews');
   res.render('spots', { title: 'Spots', spots });
 };
 
@@ -180,4 +180,9 @@ exports.getHearts = async (req, res) => {
   });
 
   res.render('hearts', { title: 'Hearted spot', spots });
+};
+
+exports.getTopSpots = async (req, res) => {
+  const spots = await Spot.getTopSpots();
+  res.render('topSpots', { title: '🇹🇼 The best spots ⭐️', spots });
 };
