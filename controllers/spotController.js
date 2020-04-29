@@ -40,7 +40,6 @@ exports.resize = async (req, res, next) => {
   // Rename the photo with a unique ID (uuid)
   // then send it to the body request with it's mimetype extention (we don't trust the users extension)
   const extension = req.file.mimetype.split('/')[1];
-  console.log(req.body);
   req.body.photo = `${uuid.v4()}.${extension}`;
 
   // Resize the photo
@@ -147,7 +146,7 @@ exports.mapSpots = async (req, res) => {
           type: 'Point',
           coordinates
         },
-        $maxDistance: 10000 // 10 km
+        $maxDistance: 80000 // 10 km
       }
     }
   };

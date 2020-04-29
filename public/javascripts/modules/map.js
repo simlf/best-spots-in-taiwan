@@ -1,15 +1,17 @@
 import axios from 'axios'; // library for XMLHTTP and http requests
 import { $ } from './bling';
+
 const mapOptions = {
-  center: { lat: 43.2, lng: -79.8 },
-  zoom: 10
+  center: { lat: 25, lng: 121.5 },
+  zoom: 9
 };
 
-function loadPlaces(map, lat = 43.2, lng = -79.8) {
+function loadPlaces(map, lat = 25, lng = 121.5) {
   axios.get(`/api/spots/near?lat=${lat}&lng=${lng}`)
     .then(response => {
       // skip it if there isnt any place found
       const places = response.data;
+      console.log(places);
       if (!places.length) {
         alert('No places found');
         return;

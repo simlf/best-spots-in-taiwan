@@ -6,6 +6,6 @@ exports.addReview = async (req, res) => {
   req.body.spot = req.params.id;
   const newReview = new Review(req.body);
   await newReview.save();
-  req.flash('success', 'Review Saved!');
+  req.flash('success', 'Review saved!');
   res.redirect('back');
 };

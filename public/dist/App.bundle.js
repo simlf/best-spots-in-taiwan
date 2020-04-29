@@ -1039,17 +1039,18 @@ var _bling = __webpack_require__(1);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapOptions = {
-  center: { lat: 43.2, lng: -79.8 },
-  zoom: 10
+  center: { lat: 25, lng: 121.5 },
+  zoom: 9
 };
 
 function loadPlaces(map) {
-  var lat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 43.2;
-  var lng = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : -79.8;
+  var lat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 25;
+  var lng = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 121.5;
 
   _axios2.default.get('/api/spots/near?lat=' + lat + '&lng=' + lng).then(function (response) {
     // skip it if there isnt any place found
     var places = response.data;
+    console.log(places);
     if (!places.length) {
       alert('No places found');
       return;
