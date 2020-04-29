@@ -1,0 +1,11 @@
+mixin reviewForm(spot)
+  form.reviewer(action=`/reviews/${spot._id}` method="POST")
+    textarea(name="text" placeholder="What did you think about this spot? Was it good? Please leave a review")
+    .reviewer__meta
+      .reviewer__stars
+        each num in [5,4,3,2,1]
+          input(type="radio" required id=`star${num}` name="rating" value=num)
+          label(for=`star${num}`) #{num} Stars
+      input.button(type="submit" value="Submit Review =>")
+
+

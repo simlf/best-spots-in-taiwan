@@ -3,6 +3,7 @@ const router = express.Router();
 const spotController = require('../controllers/spotController');
 const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
+const reviewController = require('../controllers/reviewController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 router.get('/', catchErrors(spotController.getSpots));
@@ -61,6 +62,8 @@ router.post('/account/reset/:token',
 router.get('/map', spotController.mapPage);
 router.get('/hearts', authController.isLoggedIn,
   catchErrors(spotController.getHearts));
+router.post('/reviews/:id', authController.isLoggedIn,
+  catchErrors(reviewController.addReview));
 
 // API Endpoints
 router.get('/api/search', catchErrors(spotController.searchSpots));
