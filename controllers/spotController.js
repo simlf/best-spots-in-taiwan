@@ -102,7 +102,7 @@ exports.updateSpot = async (req, res) => {
 
 exports.getSpotBySlug = async (req, res, next) => {
   // Find the spot in the DB
-  const spot = await Spot.findOne({ slug: req.params.slug }).populate('author');
+  const spot = await Spot.findOne({ slug: req.params.slug }).populate('author reviews');
   if (!spot) return next();
   // Render the page
   res.render('spot', { spot, title: spot.name });
@@ -179,5 +179,5 @@ exports.getHearts = async (req, res) => {
     _id: { $in: req.user.hearts }
   });
 
-  res.render('hearts', { title: 'Hearted store', spots });
+  res.render('hearts', { title: 'Hearted spot', spots });
 };

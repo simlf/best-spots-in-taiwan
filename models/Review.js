@@ -11,10 +11,10 @@ const reviewSchema = new mongoose.Schema({
     ref: 'User',
     required: 'You must supply an author!'
   },
-  store: {
+  spot: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Store',
-    required: 'You must supply a store!'
+    ref: 'Spot',
+    required: 'You must supply a spot!'
   },
   text: {
     type: String,
@@ -26,5 +26,14 @@ const reviewSchema = new mongoose.Schema({
     max: 5
   }
 });
+
+// this will populate the author in the review so that we can see all the author (name, email...) instead of just it's ID
+function autoPopulate(next) {
+  this.populate('author');
+  next();
+}
+
+reviewSchema.pre('find', autoPopulate);
+reviewSchema.pre('findOne', autoPopulate);
 
 module.exports = mongoose.model('Review', reviewSchema);

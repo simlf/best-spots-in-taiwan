@@ -39,6 +39,9 @@ const spotSchema = new mongoose.Schema({
     ref: 'User',
     required: 'You must supply an author'
   }
+},  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
 });
 
 // Define the indexes (so that the queries will be operated quicker)
@@ -72,6 +75,13 @@ spotSchema.statics.getTagsList = function() {
     { $unwind: '$tags' },
     { $sortByCount: '$tags' }
     ]);
-}
+};
+
+// find reviews where the spots _id property === reviews spot property
+spotSchema.virtual('reviews', {
+  ref: 'Review', // what model to link ?
+  localField: '_id', // which field on the spot ?
+  foreignField: 'spot' // which field on the review ?
+});
 
 module.exports = mongoose.model('Spot', spotSchema);
