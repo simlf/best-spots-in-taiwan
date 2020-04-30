@@ -64,13 +64,26 @@ exports.getSpots = async (req, res)  => {
   const page = req.params.page || 1;
   const limit = 4;
   const skip = (page * limit) - limit;
+
   // Query DB for a list of all spots and paginate (for performance reasons)
-  const spots = await Spot
+  const spotsPromise = Spot
   .find()
   .skip(skip)
   .limit(limit)
   .populate('reviews');
-  res.render('spots', { title: 'Spots', spots });
+
+  const countPromise = Spot.count();
+  // the two queries spotsPromise anf countPromise will be done at the same time but wait for both of them to come back
+  const [spots, count] = await Promise.all([spotsPromise, countPromise]);
+  const pages = Math.ceil(count / limit); // Math.ceil() will round the result up to next number
+
+  // redirect to the last page if they request a page that doesnt exists
+  if (!spots.length && skip) {
+    req.flash('info', `You asked for page ${page}, that doesn't exists, you are redirected to page ${pages}`);
+    res.redirect(`/spots/page/${pages}`);
+    return;
+  }
+  res.render('spots', { title: 'Spots', spots, pages, page, count });
 };
 
 const confirmOwner = (spot, user) => {

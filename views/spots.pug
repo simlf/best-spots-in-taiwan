@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_spotCard
+include mixins/_pagination
 
 block content
   .inner
@@ -8,3 +9,5 @@ block content
     .spots
       each spot in spots
         +spotCard(spot)
+    +pagination(page, pages, count)
+
