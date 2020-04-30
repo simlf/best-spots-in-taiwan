@@ -8,6 +8,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 router.get('/', catchErrors(spotController.getSpots));
 router.get('/spots', catchErrors(spotController.getSpots));
+router.get('/spots/page/:page', catchErrors(spotController.getSpots));
 router.get('/add',
   authController.isLoggedIn,
   spotController.addSpot);

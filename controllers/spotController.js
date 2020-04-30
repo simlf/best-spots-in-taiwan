@@ -61,8 +61,15 @@ exports.createSpot = async (req, res) => {
 };
 
 exports.getSpots = async (req, res)  => {
-  // Query DB for a list of all spots
-  const spots = await Spot.find().populate('reviews');
+  const page = req.params.page || 1;
+  const limit = 4;
+  const skip = (page * limit) - limit;
+  // Query DB for a list of all spots and paginate (for performance reasons)
+  const spots = await Spot
+  .find()
+  .skip(skip)
+  .limit(limit)
+  .populate('reviews');
   res.render('spots', { title: 'Spots', spots });
 };
 
