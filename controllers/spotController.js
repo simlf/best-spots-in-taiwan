@@ -62,7 +62,7 @@ exports.createSpot = async (req, res) => {
 
 exports.getSpots = async (req, res)  => {
   const page = req.params.page || 1;
-  const limit = 4;
+  const limit = 6;
   const skip = (page * limit) - limit;
 
   // Query DB for a list of all spots and paginate (for performance reasons)
