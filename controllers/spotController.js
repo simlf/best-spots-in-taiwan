@@ -70,6 +70,7 @@ exports.getSpots = async (req, res)  => {
   .find()
   .skip(skip)
   .limit(limit)
+  .sort({ created: -1 })
   .populate('reviews');
 
   const countPromise = Spot.count();
