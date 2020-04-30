@@ -1,27 +1,28 @@
 ## What is this?
 
-Just you wait folks!
+A project to experiment some part of the MERN stack.
 
-## Sample Data
+At 15 years old, I took a gap year and studied in one of the top taiwanese highschool for 10 months.
 
-To load sample data, run the following command in your terminal:
+It was an awesome opportunity for me to discover the culture and the traditional Chinese language as I was hosted by locals.
 
-```bash
-npm run sample
-```
+It displays some of the best spots than you can find on Taiwan (according to my experience only). If you are planning to go there, hit me up!
 
-If you have previously loaded in this data, you can wipe your database 100% clean with:
 
-```bash
-npm run blowitallaway
-```
+The project is mainly coded using :
+-> Node.js
+-> Express.js
+-> Mongo.DB
+-> Pug.js
 
-That will populate 16 stores with 3 authors and 41 reviews. The logins for the authors are as follows:
+To create this project I followed courses from Wes Bos.
 
-|Name|Email (login)|Password|
-|---|---|---|
-|Wes Bos|wes@example.com|wes|
-|Debbie Downer|debbie@example.com|debbie|
-|Beau|beau@example.com|beau|
+## Login
+
+Feel free to login:
+
+|Email (login)|Password|
+|---|---|
+|chenhao@gmail.com|secret|
 
 
