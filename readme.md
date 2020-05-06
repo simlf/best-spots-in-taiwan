@@ -1,6 +1,6 @@
 ## What is this?
 
-A project to experiment some part of the MERN stack.
+A project to experiment some part of the MERN stack and create an API.
 
 At 15 years old, I took a gap year and studied in one of the top taiwanese highschool for 10 months.
 
